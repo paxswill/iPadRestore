@@ -14,7 +14,7 @@
 		B1F40D5312F7069F00F60D70 /* iPadRestoreAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F40D5212F7069F00F60D70 /* iPadRestoreAppDelegate.m */; };
 		B1F40D5612F7069F00F60D70 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1F40D5412F7069F00F60D70 /* MainMenu.xib */; };
 		B1F40D5F12F707A800F60D70 /* ODURestoreController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F40D5D12F707A800F60D70 /* ODURestoreController.m */; };
-		B1F40D6012F707A800F60D70 /* ODURestoreController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1F40D5E12F707A800F60D70 /* ODURestoreController.xib */; };
+		B1F40D6012F707A800F60D70 /* ODURestoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1F40D5E12F707A800F60D70 /* ODURestoreView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +33,7 @@
 		B1F40D5512F7069F00F60D70 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		B1F40D5C12F707A800F60D70 /* ODURestoreController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODURestoreController.h; sourceTree = "<group>"; };
 		B1F40D5D12F707A800F60D70 /* ODURestoreController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODURestoreController.m; sourceTree = "<group>"; };
-		B1F40D5E12F707A800F60D70 /* ODURestoreController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ODURestoreController.xib; sourceTree = "<group>"; };
+		B1F40D5E12F707A800F60D70 /* ODURestoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ODURestoreView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,7 +93,7 @@
 				B1F40D4612F7069E00F60D70 /* Supporting Files */,
 				B1F40D5C12F707A800F60D70 /* ODURestoreController.h */,
 				B1F40D5D12F707A800F60D70 /* ODURestoreController.m */,
-				B1F40D5E12F707A800F60D70 /* ODURestoreController.xib */,
+				B1F40D5E12F707A800F60D70 /* ODURestoreView.xib */,
 			);
 			path = iPadRestore;
 			sourceTree = "<group>";
@@ -163,7 +163,7 @@
 				B1F40D4A12F7069E00F60D70 /* InfoPlist.strings in Resources */,
 				B1F40D5012F7069F00F60D70 /* Credits.rtf in Resources */,
 				B1F40D5612F7069F00F60D70 /* MainMenu.xib in Resources */,
-				B1F40D6012F707A800F60D70 /* ODURestoreController.xib in Resources */,
+				B1F40D6012F707A800F60D70 /* ODURestoreView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

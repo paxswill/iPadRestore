@@ -11,7 +11,13 @@
 
 @interface ODURestoreController : NSViewController {
 @private
-    
+    NSButton *rescan;
+	NSButton *restore;
+	NSMutableArray *iPads;
 }
+@property (readwrite, nonatomic, retain) NSButton *rescan;
+@property (readwrite, nonatomic, retain) NSButton *restore;
+@property (readwrite, nonatomic, retain) NSMutableArray *iPads;
+
 
 @end

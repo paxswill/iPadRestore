@@ -7,13 +7,17 @@
 //
 
 #import "iPadRestoreAppDelegate.h"
+#import "ODURestoreController.h"
 
 @implementation iPadRestoreAppDelegate
 
 @synthesize window;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	// Insert code here to initialize your application
+	// Put the custom view in the window
+	ODURestoreController *restoreController = [[ODURestoreController alloc] initWithNibName:@"ODURestoreView" bundle:[NSBundle mainBundle]];
+	[self.window setContentView:restoreController.view];
+	NSLog(@"Restore Controller set up");
 }
 
 @end
