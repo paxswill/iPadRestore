@@ -1,0 +1,287 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B1F40D4012F7069E00F60D70 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1F40D3F12F7069E00F60D70 /* Cocoa.framework */; };
+		B1F40D4A12F7069E00F60D70 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1F40D4812F7069E00F60D70 /* InfoPlist.strings */; };
+		B1F40D4D12F7069E00F60D70 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F40D4C12F7069E00F60D70 /* main.m */; };
+		B1F40D5012F7069F00F60D70 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = B1F40D4E12F7069F00F60D70 /* Credits.rtf */; };
+		B1F40D5312F7069F00F60D70 /* iPadRestoreAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F40D5212F7069F00F60D70 /* iPadRestoreAppDelegate.m */; };
+		B1F40D5612F7069F00F60D70 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1F40D5412F7069F00F60D70 /* MainMenu.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B1F40D3B12F7069E00F60D70 /* iPadRestore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iPadRestore.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1F40D3F12F7069E00F60D70 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		B1F40D4212F7069E00F60D70 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		B1F40D4312F7069E00F60D70 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		B1F40D4412F7069E00F60D70 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		B1F40D4712F7069E00F60D70 /* iPadRestore-Info.plist */ = {isa = PBXFileReference; path = "iPadRestore-Info.plist"; sourceTree = "<group>"; };
+		B1F40D4912F7069E00F60D70 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B1F40D4B12F7069E00F60D70 /* iPadRestore-Prefix.pch */ = {isa = PBXFileReference; path = "iPadRestore-Prefix.pch"; sourceTree = "<group>"; };
+		B1F40D4C12F7069E00F60D70 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B1F40D4F12F7069F00F60D70 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		B1F40D5112F7069F00F60D70 /* iPadRestoreAppDelegate.h */ = {isa = PBXFileReference; path = iPadRestoreAppDelegate.h; sourceTree = "<group>"; };
+		B1F40D5212F7069F00F60D70 /* iPadRestoreAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iPadRestoreAppDelegate.m; sourceTree = "<group>"; };
+		B1F40D5512F7069F00F60D70 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B1F40D3812F7069E00F60D70 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1F40D4012F7069E00F60D70 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B1F40D3012F7069E00F60D70 = {
+			isa = PBXGroup;
+			children = (
+				B1F40D4512F7069E00F60D70 /* iPadRestore */,
+				B1F40D3E12F7069E00F60D70 /* Frameworks */,
+				B1F40D3C12F7069E00F60D70 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B1F40D3C12F7069E00F60D70 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B1F40D3B12F7069E00F60D70 /* iPadRestore.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B1F40D3E12F7069E00F60D70 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B1F40D3F12F7069E00F60D70 /* Cocoa.framework */,
+				B1F40D4112F7069E00F60D70 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B1F40D4112F7069E00F60D70 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B1F40D4212F7069E00F60D70 /* AppKit.framework */,
+				B1F40D4312F7069E00F60D70 /* CoreData.framework */,
+				B1F40D4412F7069E00F60D70 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		B1F40D4512F7069E00F60D70 /* iPadRestore */ = {
+			isa = PBXGroup;
+			children = (
+				B1F40D5112F7069F00F60D70 /* iPadRestoreAppDelegate.h */,
+				B1F40D5212F7069F00F60D70 /* iPadRestoreAppDelegate.m */,
+				B1F40D5412F7069F00F60D70 /* MainMenu.xib */,
+				B1F40D4612F7069E00F60D70 /* Supporting Files */,
+			);
+			path = iPadRestore;
+			sourceTree = "<group>";
+		};
+		B1F40D4612F7069E00F60D70 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B1F40D4712F7069E00F60D70 /* iPadRestore-Info.plist */,
+				B1F40D4812F7069E00F60D70 /* InfoPlist.strings */,
+				B1F40D4B12F7069E00F60D70 /* iPadRestore-Prefix.pch */,
+				B1F40D4C12F7069E00F60D70 /* main.m */,
+				B1F40D4E12F7069F00F60D70 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B1F40D3A12F7069E00F60D70 /* iPadRestore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B1F40D5912F7069F00F60D70 /* Build configuration list for PBXNativeTarget "iPadRestore" */;
+			buildPhases = (
+				B1F40D3712F7069E00F60D70 /* Sources */,
+				B1F40D3812F7069E00F60D70 /* Frameworks */,
+				B1F40D3912F7069E00F60D70 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iPadRestore;
+			productName = iPadRestore;
+			productReference = B1F40D3B12F7069E00F60D70 /* iPadRestore.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B1F40D3212F7069E00F60D70 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = "Naval Research Lab";
+			};
+			buildConfigurationList = B1F40D3512F7069E00F60D70 /* Build configuration list for PBXProject "iPadRestore" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B1F40D3012F7069E00F60D70;
+			productRefGroup = B1F40D3C12F7069E00F60D70 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B1F40D3A12F7069E00F60D70 /* iPadRestore */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B1F40D3912F7069E00F60D70 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1F40D4A12F7069E00F60D70 /* InfoPlist.strings in Resources */,
+				B1F40D5012F7069F00F60D70 /* Credits.rtf in Resources */,
+				B1F40D5612F7069F00F60D70 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B1F40D3712F7069E00F60D70 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1F40D4D12F7069E00F60D70 /* main.m in Sources */,
+				B1F40D5312F7069F00F60D70 /* iPadRestoreAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		B1F40D4812F7069E00F60D70 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B1F40D4912F7069E00F60D70 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		B1F40D4E12F7069F00F60D70 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B1F40D4F12F7069F00F60D70 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		B1F40D5412F7069F00F60D70 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B1F40D5512F7069F00F60D70 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B1F40D5712F7069F00F60D70 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		B1F40D5812F7069F00F60D70 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		B1F40D5A12F7069F00F60D70 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iPadRestore/iPadRestore-Prefix.pch";
+				INFOPLIST_FILE = "iPadRestore/iPadRestore-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		B1F40D5B12F7069F00F60D70 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iPadRestore/iPadRestore-Prefix.pch";
+				INFOPLIST_FILE = "iPadRestore/iPadRestore-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B1F40D3512F7069E00F60D70 /* Build configuration list for PBXProject "iPadRestore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1F40D5712F7069F00F60D70 /* Debug */,
+				B1F40D5812F7069F00F60D70 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B1F40D5912F7069F00F60D70 /* Build configuration list for PBXNativeTarget "iPadRestore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1F40D5A12F7069F00F60D70 /* Debug */,
+				B1F40D5B12F7069F00F60D70 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B1F40D3212F7069E00F60D70 /* Project object */;
+}
