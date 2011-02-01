@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B1B92B3A12F70F2400256851 /* ODUiPad.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B92B3912F70F2400256851 /* ODUiPad.m */; };
+		B1BAE6FF12F7154600F832D0 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1BAE6FE12F7154600F832D0 /* ScriptingBridge.framework */; };
 		B1F40D4012F7069E00F60D70 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1F40D3F12F7069E00F60D70 /* Cocoa.framework */; };
 		B1F40D4A12F7069E00F60D70 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1F40D4812F7069E00F60D70 /* InfoPlist.strings */; };
 		B1F40D4D12F7069E00F60D70 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F40D4C12F7069E00F60D70 /* main.m */; };
@@ -18,6 +20,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B1B92B3812F70F2400256851 /* ODUiPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODUiPad.h; sourceTree = "<group>"; };
+		B1B92B3912F70F2400256851 /* ODUiPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODUiPad.m; sourceTree = "<group>"; };
+		B1BAE6FC12F7130000F832D0 /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
+		B1BAE6FD12F7130000F832D0 /* SystemEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemEvents.h; sourceTree = "<group>"; };
+		B1BAE6FE12F7154600F832D0 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		B1F40D3B12F7069E00F60D70 /* iPadRestore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iPadRestore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1F40D3F12F7069E00F60D70 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		B1F40D4212F7069E00F60D70 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -41,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1BAE6FF12F7154600F832D0 /* ScriptingBridge.framework in Frameworks */,
 				B1F40D4012F7069E00F60D70 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -51,6 +59,7 @@
 		B1F40D3012F7069E00F60D70 = {
 			isa = PBXGroup;
 			children = (
+				B1BAE6FE12F7154600F832D0 /* ScriptingBridge.framework */,
 				B1F40D4512F7069E00F60D70 /* iPadRestore */,
 				B1F40D3E12F7069E00F60D70 /* Frameworks */,
 				B1F40D3C12F7069E00F60D70 /* Products */,
@@ -87,6 +96,8 @@
 		B1F40D4512F7069E00F60D70 /* iPadRestore */ = {
 			isa = PBXGroup;
 			children = (
+				B1BAE6FC12F7130000F832D0 /* iTunes.h */,
+				B1BAE6FD12F7130000F832D0 /* SystemEvents.h */,
 				B1F40D5112F7069F00F60D70 /* iPadRestoreAppDelegate.h */,
 				B1F40D5212F7069F00F60D70 /* iPadRestoreAppDelegate.m */,
 				B1F40D5412F7069F00F60D70 /* MainMenu.xib */,
@@ -94,6 +105,8 @@
 				B1F40D5C12F707A800F60D70 /* ODURestoreController.h */,
 				B1F40D5D12F707A800F60D70 /* ODURestoreController.m */,
 				B1F40D5E12F707A800F60D70 /* ODURestoreView.xib */,
+				B1B92B3812F70F2400256851 /* ODUiPad.h */,
+				B1B92B3912F70F2400256851 /* ODUiPad.m */,
 			);
 			path = iPadRestore;
 			sourceTree = "<group>";
@@ -177,6 +190,7 @@
 				B1F40D4D12F7069E00F60D70 /* main.m in Sources */,
 				B1F40D5312F7069F00F60D70 /* iPadRestoreAppDelegate.m in Sources */,
 				B1F40D5F12F707A800F60D70 /* ODURestoreController.m in Sources */,
+				B1B92B3A12F70F2400256851 /* ODUiPad.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,6 +305,7 @@
 				B1F40D5B12F7069F00F60D70 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
