@@ -17,6 +17,8 @@
 		B1F40D5612F7069F00F60D70 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1F40D5412F7069F00F60D70 /* MainMenu.xib */; };
 		B1F40D5F12F707A800F60D70 /* ODURestoreController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F40D5D12F707A800F60D70 /* ODURestoreController.m */; };
 		B1F40D6012F707A800F60D70 /* ODURestoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1F40D5E12F707A800F60D70 /* ODURestoreView.xib */; };
+		B1FAE5F212F8B1580055673B /* ODUAccessUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FAE5F112F8B1580055673B /* ODUAccessUtilities.m */; };
+		B1FAE5F512FA0BA70055673B /* ODUUIElement.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FAE5F412FA0BA70055673B /* ODUUIElement.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +43,10 @@
 		B1F40D5C12F707A800F60D70 /* ODURestoreController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODURestoreController.h; sourceTree = "<group>"; };
 		B1F40D5D12F707A800F60D70 /* ODURestoreController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODURestoreController.m; sourceTree = "<group>"; };
 		B1F40D5E12F707A800F60D70 /* ODURestoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ODURestoreView.xib; sourceTree = "<group>"; };
+		B1FAE5F012F8B1580055673B /* ODUAccessUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODUAccessUtilities.h; sourceTree = "<group>"; };
+		B1FAE5F112F8B1580055673B /* ODUAccessUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODUAccessUtilities.m; sourceTree = "<group>"; };
+		B1FAE5F312FA0BA70055673B /* ODUUIElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODUUIElement.h; sourceTree = "<group>"; };
+		B1FAE5F412FA0BA70055673B /* ODUUIElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODUUIElement.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +113,10 @@
 				B1F40D5E12F707A800F60D70 /* ODURestoreView.xib */,
 				B1B92B3812F70F2400256851 /* ODUiPad.h */,
 				B1B92B3912F70F2400256851 /* ODUiPad.m */,
+				B1FAE5F012F8B1580055673B /* ODUAccessUtilities.h */,
+				B1FAE5F112F8B1580055673B /* ODUAccessUtilities.m */,
+				B1FAE5F312FA0BA70055673B /* ODUUIElement.h */,
+				B1FAE5F412FA0BA70055673B /* ODUUIElement.m */,
 			);
 			path = iPadRestore;
 			sourceTree = "<group>";
@@ -191,6 +201,8 @@
 				B1F40D5312F7069F00F60D70 /* iPadRestoreAppDelegate.m in Sources */,
 				B1F40D5F12F707A800F60D70 /* ODURestoreController.m in Sources */,
 				B1B92B3A12F70F2400256851 /* ODUiPad.m in Sources */,
+				B1FAE5F212F8B1580055673B /* ODUAccessUtilities.m in Sources */,
+				B1FAE5F512FA0BA70055673B /* ODUUIElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
