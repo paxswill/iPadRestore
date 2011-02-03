@@ -8,14 +8,13 @@
 
 #import "ODURestoreController.h"
 #import "ODUiPad.h"
+#import "ODUUIElement.h"
 
 @implementation ODURestoreController
 
 @synthesize rescan;
 @synthesize restore;
 @synthesize iPads;
-@synthesize systemEvents;
-@synthesize iTunes;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
@@ -28,26 +27,18 @@
 		test2.serialNumber = @"bar";
 		[self.iPads addObject:test1];
 		[self.iPads addObject:test2];
-		self.iTunes = nil;
-		self.systemEvents = nil;
     }
     
     return self;
 }
 
 -(IBAction)rescan:(id)sender{
-	// If we don't have handles to iTunes/SystemEvents, get them
-	if(!self.systemEvents){
-		self.systemEvents = [SBApplication applicationWithBundleIdentifier:@"com.apple.systemevents"];
+	ODUUIElement *iTunesElement = [[ODUUIElement elementForApplicationBundle:@"com.apple.iTunes"] retain];
+	if(iTunesElement != nil){
+		NSLog(@"iTunesElement: %@", iTunesElement);
+	}else{
+		NSLog(@"Screwup on aisle 3");
 	}
-	if(!self.iTunes){
-		self.iTunes = [SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"];
-	}
-	SystemEventsApplicationProcess *iTunesProcess = [[self.systemEvents applicationProcesses] objectWithName:@"iTunes"];
-	SystemEventsWindow *iTunesWindow = nil;
-	NSArray *element = [iTunesProcess UIElements];
-	NSLog(@"Element count: %lu", [element count]);
-	NSLog(@"Elements:\n%@", element);
 }
 
 - (void)dealloc {
