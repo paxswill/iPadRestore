@@ -33,12 +33,63 @@
 }
 
 -(IBAction)rescan:(id)sender{
+	//Get iTunes
 	ODUUIElement *iTunesElement = [[ODUUIElement elementForApplicationBundle:@"com.apple.iTunes"] retain];
-	if(iTunesElement != nil){
-		NSLog(@"iTunesElement: %@", iTunesElement);
-	}else{
-		NSLog(@"Screwup on aisle 3");
-	}
+	//Get the main window
+	ODUUIElement *mainWindow = [[iTunesElement getElementForAttribute:(NSString *)kAXMainWindowAttribute] retain];;
+	//Find the Sources Scroll area
+	BOOL (^scrollTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
+		ODUUIElement *child = (ODUUIElement *)obj;
+		BOOL isScroll = [(NSString *)[child.attributes valueForKey:(NSString *)kAXRoleAttribute] isEqualToString:(NSString *)kAXScrollAreaRole];
+		BOOL isSources = [(NSString *)[child.attributes valueForKey:(NSString *)kAXDescription] isEqualToString:@"sources"];
+		return isScroll && isSources;
+	};
+	NSUInteger scrollIndex = [mainWindow.children indexOfObjectPassingTest:scrollTest];
+	ODUUIElement *scrollArea = [mainWindow getChildAtIndex:scrollIndex];
+	//Get the outline
+	BOOL (^outlineTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
+		ODUUIElement *child = (ODUUIElement *)obj;
+		BOOL isOutline = [(NSString *)[child.attributes valueForKey:(NSString *)kAXRoleAttribute] isEqualToString:(NSString *)kAXOutlineRole];
+		BOOL isSources = [(NSString *)[child.attributes valueForKey:(NSString *)kAXDescription] isEqualToString:@"sources"];
+		return isOutline && isSources;
+	};
+	NSUInteger outlineIndex = [scrollArea.children indexOfObjectPassingTest:outlineTest];
+	ODUUIElement *scrollOutline = [scrollArea getChildAtIndex:outlineIndex];
+	NSLog(@"Scroll Outline:\n%@", scrollOutline);
+	//Get the device
+	BOOL (^deviceTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
+		ODUUIElement *child = (ODUUIElement *)obj;
+		NSLog(@"Current Child: %@", child);
+		BOOL isRow = [(NSString *)[child.attributes valueForKey:(NSString *)kAXRoleAttribute] isEqualToString:(NSString *)kAXRowRole];
+		BOOL isDevice = NO;
+		if([child.children count] == 1){
+			ODUUIElement *potentialDescription = [child.children objectAtIndex:0];
+			if([(NSString *)[potentialDescription.attributes valueForKey:(NSString *)kAXRoleAttribute] isEqualToString:(NSString *)kAXStaticTextRole]){
+				isDevice = [(NSString *)[potentialDescription.attributes valueForKey:(NSString *)kAXDescription] isEqualToString:(NSString *)@"device"];
+			}else{
+				isDevice = NO;
+			}
+		}else{
+			isDevice = NO;
+		}
+		//BOOL isDevice = [(NSString *)[child.attributes valueForKey:(NSString *)kAXDescription] isEqualToString:@"device"];
+		return isRow && isDevice;
+	};
+	NSUInteger deviceRow = [scrollOutline.children indexOfObjectPassingTest:deviceTest];
+	ODUUIElement *deviceElement = [scrollOutline getChildAtIndex:deviceRow];
+	NSLog(@"Device:\n%@", deviceElement);
+	//Now click on the device row to select the iPad
+	CGPoint iPadPoint;
+	AXValueGetValue((AXValueRef)[deviceElement.attributes objectForKey:(NSString *)kAXPositionAttribute], kAXValueCGPointType, &iPadPoint);
+	iPadPoint.x = iPadPoint.x + 20;
+	iPadPoint.y = iPadPoint.y + 5;
+	CGEventRef iPadClick = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, iPadPoint, kCGMouseButtonLeft);
+	// Just before we click, raise iTunes to the front
+	[mainWindow performSelector:NSSelectorFromString(@"AXRaise")];
+	// Do it twice, once to make the application active, another to select
+	CGEventPost(kCGHIDEventTap, iPadClick);
+	CGEventPost(kCGHIDEventTap, iPadClick);
+	
 }
 
 - (void)dealloc {
