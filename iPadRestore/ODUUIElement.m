@@ -15,6 +15,7 @@
 @synthesize attributes;
 @synthesize actions;
 @synthesize children;
+@synthesize toManyAttributes;
 
 - (id)init {
     if ((self = [super init])) {
@@ -27,6 +28,7 @@
 -(id)initWithUIElement:(AXUIElementRef)uiElement{
 	if((self = [super init])){
 		self.element = uiElement;
+		self.toManyAttributes = [NSMutableSet set];
 		//Fill the attributes and actions
 		CFMutableArrayRef attributeNames;
 		NSMutableArray *attributeValues = [[NSMutableArray alloc] init];
@@ -61,6 +63,8 @@
 				error = AXUIElementCopyAttributeValues(self.element, attribute, 0, attributeCount + 1, &values);
 				[attributeValues addObject:(id)values];
 				CFRelease(values);
+				//Mark the attribute as a 'to-many' attribute
+				[self.toManyAttributes addObject:(NSString *)attribute];
 			}else{
 				NSLog(@"Attribute %@ has no value", attribute);
 				CFArrayRemoveValueAtIndex(attributeNames, i);
@@ -174,21 +178,34 @@
 
 //These methods provide dynamic (runtime) method resolution for the AXActions. It is heavy, but it works.
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector{
+	//First check to see if it's a to-many attribute
+	BOOL foundAttribute = [self.toManyAttributes containsObject:NSStringFromSelector(aSelector)];
 	//Here we check to see if the selector has an associtaed action for this element
-	BOOL foundSelector = NO;
+	BOOL foundAction = NO;
 	for(int i = 0; i < [[self.actions allKeys] count]; ++i){
 		if(aSelector == NSSelectorFromString([[self.actions allKeys] objectAtIndex:i])){
-			foundSelector = YES;
+			foundAction = YES;
 			break;
 		}
 	}
-	if(foundSelector){
-		//Just the two hidden variables, no arguments
+	if(foundAction){
+		//Just the two hidden variables, no arguments, void return type
 		char *types = malloc(sizeof(char) * 3);
 		types[0] = @encode(void)[0];
 		types[1] = @encode(id)[0];
 		types[2] = @encode(SEL)[0];
 		NSMethodSignature *signature = [NSMethodSignature signatureWithObjCTypes:types];
+		free(types);
+		return signature;
+	}else if(foundAttribute){
+		char *types = malloc(sizeof(char) * 4);
+		//Returning id, and no special arguments 
+		types[0] = @encode(id)[0];
+		types[1] = @encode(id)[0];
+		types[2] = @encode(SEL)[0];
+		types[3] = @encode(id)[0];
+		NSMethodSignature *signature = [NSMethodSignature signatureWithObjCTypes:types];
+		free(types);
 		return signature;
 	}else{
 		return nil;
@@ -198,9 +215,30 @@
 - (void)forwardInvocation:(NSInvocation *)anInvocation{
 	//Now to run this stuff
 	SEL selector = [anInvocation selector];
-	NSString *action = NSStringFromSelector(selector);
-	AXError error = AXUIElementPerformAction(self.element, (CFStringRef)action);
-	NSAssert(error == kAXErrorSuccess, @"Action failed!");
+	if([self.toManyAttributes containsObject:NSStringFromSelector(selector)]){
+		// A to-many attribute. Modify the invocation
+		[anInvocation setTarget:self];
+		[anInvocation setSelector:@selector(arrayForAttribute:)];
+		[anInvocation setArgument:NSStringFromSelector(selector) atIndex:2];
+		
+	}else{
+		// An action
+		NSString *action = NSStringFromSelector(selector);
+		AXError error = AXUIElementPerformAction(self.element, (CFStringRef)action);
+		NSAssert(error == kAXErrorSuccess, @"Action failed!");
+	}
+}
+
+-(NSArray *)arrayForAttribute:(NSString *)attribute{
+	CFIndex attributeCount;
+	AXError error = AXUIElementGetAttributeValueCount(self.element, (CFStringRef)attribute, &attributeCount);
+	CFArrayRef values;
+	error = AXUIElementCopyAttributeValues(self.element, (CFStringRef)attribute, 0, attributeCount + 1, &values);
+	NSMutableArray *attributeValues = [[NSMutableArray alloc] initWithCapacity:attributeCount];
+	for(int i = 0; i < attributeCount; ++i){
+		[attributeValues addObject:[[[ODUUIElement alloc] initWithUIElement:CFArrayGetValueAtIndex(values, i)] autorelease]];
+	}
+	return  attributeValues;
 }
 
 
