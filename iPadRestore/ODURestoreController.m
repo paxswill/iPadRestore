@@ -85,11 +85,31 @@
 	iPadPoint.y = iPadPoint.y + 5;
 	CGEventRef iPadClick = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, iPadPoint, kCGMouseButtonLeft);
 	// Just before we click, raise iTunes to the front
-	[mainWindow performSelector:NSSelectorFromString(@"AXRaise")];
+	[mainWindow performSelector:@selector(AXRaise)];
 	// Do it twice, once to make the application active, another to select
 	CGEventPost(kCGHIDEventTap, iPadClick);
 	CGEventPost(kCGHIDEventTap, iPadClick);
 	
+	//Now we have to backtrack to the window, and find the tab group
+	BOOL (^tabGroupTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
+		ODUUIElement *child = (ODUUIElement *)obj;
+		BOOL isTabGroup = [(NSString *)[child.attributes valueForKey:(NSString *)kAXRoleAttribute] isEqualToString:(NSString *)kAXTabGroupRole];
+		return isTabGroup;
+	};
+	NSUInteger tabGroupIndex = [mainWindow.children indexOfObjectPassingTest:tabGroupTest];
+	ODUUIElement *tabGroup = [mainWindow getChildAtIndex:tabGroupIndex];
+	NSLog(@"Tab Group:\n%@", tabGroup);
+	//Make sure we're on the summary tab
+	BOOL (^summaryTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
+		ODUUIElement *child = (ODUUIElement *)obj;
+		BOOL isRadioButton = [(NSString *)[child.attributes valueForKey:(NSString *)kAXRoleAttribute] isEqualToString:(NSString *)kAXRadioButtonRole];
+		BOOL isSummary = [(NSString *)[child.attributes valueForKey:(NSString *)kAXTitleAttribute] isEqualToString:@"Summary"];
+		return isRadioButton && isSummary;
+	};
+	NSUInteger summaryIndex = [tabGroup.children indexOfObjectPassingTest:summaryTest];
+	ODUUIElement *summaryButton = [tabGroup getChildAtIndex:summaryIndex];
+	NSLog(@"summaryButton: %@", summaryButton);
+	[summaryButton performSelector:@selector(AXPress)];
 }
 
 - (void)dealloc {
