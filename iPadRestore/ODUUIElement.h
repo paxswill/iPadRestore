@@ -14,6 +14,7 @@
     AXUIElementRef element;
 	NSDictionary *attributes;
 	NSDictionary *actions;
+	NSArray *children;
 }
 @property (nonatomic, readwrite, retain) __attribute__((NSObject)) AXUIElementRef element;
 @property (nonatomic, readwrite, retain) NSDictionary *attributes;
@@ -26,5 +27,6 @@
 +(ODUUIElement *)systemElement;
 
 -(ODUUIElement *)getChildAtIndex:(NSUInteger)childIndex;
+-(ODUUIElement *)getElementForAttribute:(NSString *)attribute;
 
 @end

@@ -28,7 +28,7 @@
 	if((self = [super init])){
 		self.element = uiElement;
 		//Fill the attributes and actions
-		CFArrayRef attributeNames;
+		CFMutableArrayRef attributeNames;
 		NSMutableArray *attributeValues = [[NSMutableArray alloc] init];
 		CFArrayRef actionNames;
 		NSMutableArray *actionDescriptions = [[NSMutableArray alloc] init];
@@ -37,10 +37,17 @@
 		error = AXUIElementCopyAttributeNames(self.element, &attributeNames);
 		for(int i = 0; i < [(NSArray *)attributeNames count]; ++i){
 			//Get the attribute name
-			CFStringRef attribute = CFArrayGetValueAtIndex(attributeNames, i);
+			CFStringRef attribute = CFArrayGetValueAtIndex(attributeNames, i);			
 			//How many values does the attribute have?
 			CFIndex attributeCount;
 			error = AXUIElementGetAttributeValueCount(self.element, attribute, &attributeCount);
+			//Check to see if this attribute is valid for this element
+			if(error == kAXErrorAttributeUnsupported){
+				error = kAXErrorSuccess;
+				CFArrayRemoveValueAtIndex(attributeNames, i);
+				--i;
+				continue;
+			}
 			//depending on how many values there are, put them in the value array
 			if(attributeCount == 1){
 				//Only one value, easy to manage
@@ -56,7 +63,8 @@
 				CFRelease(values);
 			}else{
 				NSLog(@"Attribute %@ has no value", attribute);
-				[attributeValues addObject:[[NSObject new] autorelease]];
+				CFArrayRemoveValueAtIndex(attributeNames, i);
+				--i;
 			}
 		}
 		for(int i = 0; i < [(NSArray *)actionNames count]; ++i){
@@ -64,7 +72,7 @@
 			error = AXUIElementCopyActionDescription(self.element, (CFStringRef)[(NSArray *)actionNames objectAtIndex:i], &actionDescription);
 			[actionDescriptions addObject:(NSString *)actionDescription];
 		}
-		//Make the dictionaries
+		//Make the dictionaries		
 		self.attributes = [NSDictionary dictionaryWithObjects:(NSArray *)attributeValues forKeys:(NSArray *)attributeNames];
 		self.actions = [NSDictionary dictionaryWithObjects:(NSArray *)actionDescriptions forKeys:(NSArray *)actionNames];
 		//Clean up
@@ -72,6 +80,8 @@
 		[attributeValues release];
 		CFRelease(actionNames);
 		[actionDescriptions release];
+		//Setup the children
+		children = nil;
 	}
 	return self;
 }
@@ -137,11 +147,63 @@
 }
 
 -(NSArray *)children{
-	return [self.attributes valueForKey:(NSString *)kAXChildrenAttribute];
+	//Lazy load the children.
+	if(children == nil){
+		NSUInteger childCount = [[self.attributes valueForKey:(NSString *)kAXChildrenAttribute] count];
+		NSMutableArray *tempChildren = [[NSMutableArray alloc] initWithCapacity:childCount];
+		for(int i = 0; i < childCount; ++i){
+			[tempChildren addObject:[[[ODUUIElement alloc] initWithUIElement:(AXUIElementRef)[[self.attributes valueForKey:(NSString *)kAXChildrenAttribute] objectAtIndex:i]] autorelease]];
+		}
+		children = tempChildren;
+	}
+	return children;
 }
 
 -(ODUUIElement *)getChildAtIndex:(NSUInteger)childIndex{
-	return [[[ODUUIElement alloc] initWithUIElement:(AXUIElementRef)[self.children objectAtIndex:childIndex]] autorelease];										
+	return [self.children objectAtIndex:childIndex];
 }
+
+-(ODUUIElement *)getElementForAttribute:(NSString *)attributeName{
+	if([[self.attributes allKeys] containsObject:attributeName]){
+		return [[[ODUUIElement alloc] initWithUIElement:(AXUIElementRef)[self.attributes valueForKey:attributeName]] autorelease];
+	}else{
+		return nil;
+	}
+	
+}
+
+//These methods provide dynamic (runtime) method resolution for the AXActions. It is heavy, but it works.
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector{
+	//Here we check to see if the selector has an associtaed action for this element
+	BOOL foundSelector = NO;
+	for(int i = 0; i < [[self.actions allKeys] count]; ++i){
+		if(aSelector == NSSelectorFromString([[self.actions allKeys] objectAtIndex:i])){
+			foundSelector = YES;
+			break;
+		}
+	}
+	if(foundSelector){
+		//Just the two hidden variables, no arguments
+		char *types = malloc(sizeof(char) * 3);
+		types[0] = @encode(void)[0];
+		types[1] = @encode(id)[0];
+		types[2] = @encode(SEL)[0];
+		NSMethodSignature *signature = [NSMethodSignature signatureWithObjCTypes:types];
+		return signature;
+	}else{
+		return nil;
+	}
+}
+
+- (void)forwardInvocation:(NSInvocation *)anInvocation{
+	//Now to run this stuff
+	SEL selector = [anInvocation selector];
+	NSString *action = NSStringFromSelector(selector);
+	AXError error = AXUIElementPerformAction(self.element, (CFStringRef)action);
+	NSAssert(error == kAXErrorSuccess, @"Action failed!");
+}
+
+
+
 
 @end
