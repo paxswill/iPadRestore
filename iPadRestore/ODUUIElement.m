@@ -14,6 +14,7 @@
 @synthesize element;
 @synthesize attributes;
 @synthesize actions;
+@synthesize children;
 
 - (id)init {
     if ((self = [super init])) {
@@ -28,13 +29,36 @@
 		self.element = uiElement;
 		//Fill the attributes and actions
 		CFArrayRef attributeNames;
-		CFArrayRef attributeValues;
+		NSMutableArray *attributeValues = [[NSMutableArray alloc] init];
 		CFArrayRef actionNames;
 		NSMutableArray *actionDescriptions = [[NSMutableArray alloc] init];
 		AXError error;
 		error = AXUIElementCopyActionNames(self.element, &actionNames);
 		error = AXUIElementCopyAttributeNames(self.element, &attributeNames);
-		error = AXUIElementCopyMultipleAttributeValues(self.element, attributeNames, kAXCopyMultipleAttributeOptionStopOnError, &attributeValues);
+		for(int i = 0; i < [(NSArray *)attributeNames count]; ++i){
+			//Get the attribute name
+			CFStringRef attribute = CFArrayGetValueAtIndex(attributeNames, i);
+			//How many values does the attribute have?
+			CFIndex attributeCount;
+			error = AXUIElementGetAttributeValueCount(self.element, attribute, &attributeCount);
+			//depending on how many values there are, put them in the value array
+			if(attributeCount == 1){
+				//Only one value, easy to manage
+				CFTypeRef obj;
+				error = AXUIElementCopyAttributeValue(self.element, attribute, &obj);
+				[attributeValues addObject:(id)obj];
+				CFRelease(obj);
+			}else if(attributeCount > 1){
+				//Many values, no so easy.
+				CFArrayRef values;
+				error = AXUIElementCopyAttributeValues(self.element, attribute, 0, attributeCount + 1, &values);
+				[attributeValues addObject:(id)values];
+				CFRelease(values);
+			}else{
+				NSLog(@"Attribute %@ has no value", attribute);
+				[attributeValues addObject:[[NSObject new] autorelease]];
+			}
+		}
 		for(int i = 0; i < [(NSArray *)actionNames count]; ++i){
 			CFStringRef actionDescription;
 			error = AXUIElementCopyActionDescription(self.element, (CFStringRef)[(NSArray *)actionNames objectAtIndex:i], &actionDescription);
@@ -43,6 +67,11 @@
 		//Make the dictionaries
 		self.attributes = [NSDictionary dictionaryWithObjects:(NSArray *)attributeValues forKeys:(NSArray *)attributeNames];
 		self.actions = [NSDictionary dictionaryWithObjects:(NSArray *)actionDescriptions forKeys:(NSArray *)actionNames];
+		//Clean up
+		CFRelease(attributeNames);
+		[attributeValues release];
+		CFRelease(actionNames);
+		[actionDescriptions release];
 	}
 	return self;
 }
@@ -81,7 +110,6 @@
 	return nil;
 }
 
-
 +(ODUUIElement *)elementForProcessID:(pid_t)pid{
 	AXUIElementRef uiElement = AXUIElementCreateApplication(pid);
 	ODUUIElement *element = [[ODUUIElement alloc] initWithUIElement:uiElement];
@@ -102,6 +130,18 @@
 	self.attributes = nil;
 	self.actions = nil;
     [super dealloc];
+}
+
+-(NSString *)description{
+	return [NSString stringWithFormat:@"Actions:\n%@\n\nAttributes:\n%@", self.actions, self.attributes];
+}
+
+-(NSArray *)children{
+	return [self.attributes valueForKey:(NSString *)kAXChildrenAttribute];
+}
+
+-(ODUUIElement *)getChildAtIndex:(NSUInteger)childIndex{
+	return [[[ODUUIElement alloc] initWithUIElement:(AXUIElementRef)[self.children objectAtIndex:childIndex]] autorelease];										
 }
 
 @end

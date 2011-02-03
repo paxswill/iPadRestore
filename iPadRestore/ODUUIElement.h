@@ -18,10 +18,13 @@
 @property (nonatomic, readwrite, retain) __attribute__((NSObject)) AXUIElementRef element;
 @property (nonatomic, readwrite, retain) NSDictionary *attributes;
 @property (nonatomic, readwrite, retain) NSDictionary *actions;
+@property (nonatomic, readonly) NSArray *children;
 
 -(id)initWithUIElement:(AXUIElementRef)uiElement;
 +(ODUUIElement *)elementForApplicationBundle:(NSString *)bundleIdentifier;
 +(ODUUIElement *)elementForProcessID:(pid_t)pid;
 +(ODUUIElement *)systemElement;
+
+-(ODUUIElement *)getChildAtIndex:(NSUInteger)childIndex;
 
 @end
