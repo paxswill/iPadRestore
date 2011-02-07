@@ -36,7 +36,8 @@
 	//Get iTunes
 	ODUUIElement *iTunesElement = [[ODUUIElement elementForApplicationBundle:@"com.apple.iTunes"] retain];
 	//Get the main window
-	ODUUIElement *mainWindow = [[iTunesElement getElementForAttribute:(NSString *)kAXMainWindowAttribute] retain];;
+	ODUUIElement *mainWindow = [[iTunesElement getElementForAttribute:(NSString *)kAXMainWindowAttribute] retain];
+	
 	//Find the Sources Scroll area
 	BOOL (^sourcesScrollAreaTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
 		ODUUIElement *child = (ODUUIElement *)obj;
@@ -46,6 +47,7 @@
 	};
 	NSUInteger sourcesScrollAreaIndex = [mainWindow.children indexOfObjectPassingTest:sourcesScrollAreaTest];
 	ODUUIElement *sourcesScrollArea = [mainWindow getChildAtIndex:sourcesScrollAreaIndex];
+	
 	//Get the outline
 	BOOL (^outlineTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
 		ODUUIElement *child = (ODUUIElement *)obj;
@@ -56,6 +58,7 @@
 	NSUInteger outlineIndex = [sourcesScrollArea.children indexOfObjectPassingTest:outlineTest];
 	ODUUIElement *scrollOutline = [sourcesScrollArea getChildAtIndex:outlineIndex];
 	NSLog(@"Scroll Outline:\n%@", scrollOutline);
+	
 	//Get the device
 	BOOL (^deviceTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
 		ODUUIElement *child = (ODUUIElement *)obj;
@@ -99,6 +102,7 @@
 	NSUInteger tabGroupIndex = [mainWindow.children indexOfObjectPassingTest:tabGroupTest];
 	ODUUIElement *tabGroup = [mainWindow getChildAtIndex:tabGroupIndex];
 	NSLog(@"Tab Group:\n%@", tabGroup);
+	
 	//Make sure we're on the summary tab
 	BOOL (^summaryTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
 		ODUUIElement *child = (ODUUIElement *)obj;
@@ -110,6 +114,7 @@
 	ODUUIElement *summaryButton = [tabGroup getChildAtIndex:summaryIndex];
 	NSLog(@"summaryButton: %@", summaryButton);
 	[summaryButton performSelector:@selector(AXPress)];
+	
 	//Get the scroll area
 	BOOL (^scrollAreaTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
 		ODUUIElement *child = (ODUUIElement *)obj;
@@ -119,6 +124,7 @@
 	NSUInteger scrollAreaIndex = [tabGroup.children indexOfObjectPassingTest:scrollAreaTest];
 	ODUUIElement *scrollArea = [tabGroup getChildAtIndex:scrollAreaIndex];
 	NSLog(@"scrollArea: %@", summaryButton);
+	
 	//Click the restore button
 	BOOL (^restoreButtonTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
 		ODUUIElement *child = (ODUUIElement *)obj;
