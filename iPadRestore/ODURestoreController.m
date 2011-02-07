@@ -38,14 +38,14 @@
 	//Get the main window
 	ODUUIElement *mainWindow = [[iTunesElement getElementForAttribute:(NSString *)kAXMainWindowAttribute] retain];;
 	//Find the Sources Scroll area
-	BOOL (^scrollTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
+	BOOL (^sourcesScrollAreaTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
 		ODUUIElement *child = (ODUUIElement *)obj;
 		BOOL isScroll = [(NSString *)[child.attributes valueForKey:(NSString *)kAXRoleAttribute] isEqualToString:(NSString *)kAXScrollAreaRole];
 		BOOL isSources = [(NSString *)[child.attributes valueForKey:(NSString *)kAXDescription] isEqualToString:@"sources"];
 		return isScroll && isSources;
 	};
-	NSUInteger scrollIndex = [mainWindow.children indexOfObjectPassingTest:scrollTest];
-	ODUUIElement *scrollArea = [mainWindow getChildAtIndex:scrollIndex];
+	NSUInteger sourcesScrollAreaIndex = [mainWindow.children indexOfObjectPassingTest:sourcesScrollAreaTest];
+	ODUUIElement *sourcesScrollArea = [mainWindow getChildAtIndex:sourcesScrollAreaIndex];
 	//Get the outline
 	BOOL (^outlineTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
 		ODUUIElement *child = (ODUUIElement *)obj;
@@ -53,8 +53,8 @@
 		BOOL isSources = [(NSString *)[child.attributes valueForKey:(NSString *)kAXDescription] isEqualToString:@"sources"];
 		return isOutline && isSources;
 	};
-	NSUInteger outlineIndex = [scrollArea.children indexOfObjectPassingTest:outlineTest];
-	ODUUIElement *scrollOutline = [scrollArea getChildAtIndex:outlineIndex];
+	NSUInteger outlineIndex = [sourcesScrollArea.children indexOfObjectPassingTest:outlineTest];
+	ODUUIElement *scrollOutline = [sourcesScrollArea getChildAtIndex:outlineIndex];
 	NSLog(@"Scroll Outline:\n%@", scrollOutline);
 	//Get the device
 	BOOL (^deviceTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
@@ -110,6 +110,25 @@
 	ODUUIElement *summaryButton = [tabGroup getChildAtIndex:summaryIndex];
 	NSLog(@"summaryButton: %@", summaryButton);
 	[summaryButton performSelector:@selector(AXPress)];
+	//Get the scroll area
+	BOOL (^scrollAreaTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
+		ODUUIElement *child = (ODUUIElement *)obj;
+		BOOL isScrollArea = [(NSString *)[child.attributes valueForKey:(NSString *)kAXRoleAttribute] isEqualToString:(NSString *)kAXScrollAreaRole];
+		return isScrollArea;
+	};
+	NSUInteger scrollAreaIndex = [tabGroup.children indexOfObjectPassingTest:scrollAreaTest];
+	ODUUIElement *scrollArea = [tabGroup getChildAtIndex:scrollAreaIndex];
+	NSLog(@"scrollArea: %@", summaryButton);
+	//Click the restore button
+	BOOL (^restoreButtonTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
+		ODUUIElement *child = (ODUUIElement *)obj;
+		BOOL isButton = [(NSString *)[child.attributes valueForKey:(NSString *)kAXRoleAttribute] isEqualToString:(NSString *)kAXButtonRole];
+		BOOL isRestore = [(NSString *)[child.attributes valueForKey:(NSString *)kAXTitleAttribute] isEqualToString:@"Restore"];
+		return isButton && isRestore;
+	};
+	NSUInteger restoreButtonIndex = [scrollArea.children indexOfObjectPassingTest:restoreButtonTest];
+	ODUUIElement *restoreButton = [scrollArea getChildAtIndex:restoreButtonIndex];
+	[restoreButton performSelector:@selector(AXPress)];
 }
 
 - (void)dealloc {
