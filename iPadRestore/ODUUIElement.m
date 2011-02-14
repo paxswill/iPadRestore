@@ -17,6 +17,8 @@
 @synthesize children;
 @synthesize toManyAttributes;
 
+static NSString *axErrorDomain = @"AXError";
+
 - (id)init {
     if ((self = [super init])) {
         // Initialization code here.
@@ -136,6 +138,62 @@
 	ODUUIElement *element = [[ODUUIElement alloc] initWithUIElement:uiElement];
 	CFRelease(uiElement);
 	return [element autorelease];
+}
+
++(NSError *)errorForAXError:(AXError)error{
+	NSString *errorDescription = nil;
+	switch(error){
+		case kAXErrorFailure:
+			errorDescription = @"A system error occurred, such as the failure to allocate an object.";
+			break;
+		case kAXErrorIllegalArgument:
+			errorDescription = @"An illegal argument was passed to the function.";
+			break;
+		case kAXErrorInvalidUIElement:
+			errorDescription = @"The AXUIElementRef passed to the function is invalid.";
+			break;
+		case kAXErrorInvalidUIElementObserver:
+			errorDescription = @"The AXObserverRef passed to the function is not a valid observer.";
+			break;
+		case kAXErrorCannotComplete:
+			errorDescription = @"The function cannot complete because messaging failed in some way or because the application with which the function is communicating is busy or unresponsive.";
+			break;
+		case kAXErrorAttributeUnsupported:
+			errorDescription = @"The attribute is not supported by the AXUIElementRef.";
+			break;
+		case kAXErrorActionUnsupported:
+			errorDescription = @"The action is not supported by the AXUIElementRef.";
+			break;
+		case kAXErrorNotificationUnsupported:
+			errorDescription = @"The notification is not supported by the AXUIElementRef.";
+			break;
+		case kAXErrorNotImplemented:
+			errorDescription = @"Indicates that the function or method is not implemented (this can be returned if a process does not support the accessibility API).";
+			break;
+		case kAXErrorNotificationAlreadyRegistered:
+			errorDescription = @"This notification has already been registered for.";
+			break;
+		case kAXErrorNotificationNotRegistered:
+			errorDescription = @"Indicates that a notification is not registered yet.";
+			break;
+		case kAXErrorAPIDisabled:
+			errorDescription = @"The accessibility API is disabled (as when, for example, the user deselects \"Enable access for assistive devices\" in Universal Access Preferences).";
+			break;
+		case kAXErrorNoValue:
+			errorDescription = @"The requested value or AXUIElementRef does not exist.";
+			break;
+		case kAXErrorParameterizedAttributeUnsupported:
+			errorDescription = @"The parameterized attribute is not supported by the AXUIElementRef.";
+			break;
+		case kAXErrorNotEnoughPrecision:
+		default:
+			errorDescription = @"You must've really screwed up, this return value isn't documented";
+		case kAXErrorSuccess:
+			return nil;
+	}
+	return [NSError errorWithDomain:axErrorDomain 
+							   code:error 
+						   userInfo:[NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedDescriptionKey, errorDescription, nil]];
 }
 
 - (void)dealloc {

@@ -28,6 +28,8 @@
 +(ODUUIElement *)elementForProcessID:(pid_t)pid;
 +(ODUUIElement *)systemElement;
 
++(NSError *)errorForAXError:(AXError)error;
+
 -(ODUUIElement *)getChildAtIndex:(NSUInteger)childIndex;
 -(ODUUIElement *)getElementForAttribute:(NSString *)attribute;
 
