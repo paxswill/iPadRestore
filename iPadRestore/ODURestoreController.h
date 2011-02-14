@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "ODUUIElement.h"
 
 @interface ODURestoreController : NSViewController {
 @private
@@ -19,5 +20,6 @@
 @property (readwrite, nonatomic, retain) NSMutableArray *iPads;
 
 -(IBAction)rescan:(id)sender;
-
+-(IBAction)restore:(id)sender;
+-(ODUUIElement *)findElementMatchingTest:(BOOL (^)(AXUIElementRef element))test;
 @end

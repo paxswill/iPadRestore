@@ -48,6 +48,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{230, 130}, {96, 32}}</string>
 						<reference key="NSSuperview" ref="1005"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="774965245">
@@ -81,6 +82,7 @@
 										<int key="NSvFlags">256</int>
 										<string key="NSFrameSize">{206, 152}</string>
 										<reference key="NSSuperview" ref="229289632"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="136505201"/>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSTableHeaderView" key="NSHeaderView" id="323464092">
@@ -88,6 +90,7 @@
 											<int key="NSvFlags">256</int>
 											<string key="NSFrameSize">{206, 17}</string>
 											<reference key="NSSuperview" ref="946373859"/>
+											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="847205697"/>
 											<reference key="NSTableView" ref="736993784"/>
 										</object>
@@ -96,6 +99,7 @@
 											<int key="NSvFlags">-2147483392</int>
 											<string key="NSFrame">{{224, 0}, {16, 17}}</string>
 											<reference key="NSSuperview" ref="705555031"/>
+											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="229289632"/>
 										</object>
 										<array class="NSMutableArray" key="NSTableColumns">
@@ -182,6 +186,7 @@
 								</array>
 								<string key="NSFrame">{{1, 17}, {206, 152}}</string>
 								<reference key="NSSuperview" ref="705555031"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="736993784"/>
 								<reference key="NSDocView" ref="736993784"/>
 								<reference key="NSBGColor" ref="955467042"/>
@@ -192,6 +197,7 @@
 								<int key="NSvFlags">-2147483392</int>
 								<string key="NSFrame">{{224, 17}, {15, 102}}</string>
 								<reference key="NSSuperview" ref="705555031"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="303645513"/>
 								<reference key="NSTarget" ref="705555031"/>
 								<string key="NSAction">_doScroller:</string>
@@ -202,6 +208,7 @@
 								<int key="NSvFlags">-2147483392</int>
 								<string key="NSFrame">{{1, 154}, {260, 15}}</string>
 								<reference key="NSSuperview" ref="705555031"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="82149863"/>
 								<int key="NSsFlags">1</int>
 								<reference key="NSTarget" ref="705555031"/>
@@ -217,6 +224,7 @@
 								</array>
 								<string key="NSFrame">{{1, 0}, {206, 17}}</string>
 								<reference key="NSSuperview" ref="705555031"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="323464092"/>
 								<reference key="NSDocView" ref="323464092"/>
 								<reference key="NSBGColor" ref="955467042"/>
@@ -226,6 +234,7 @@
 						</array>
 						<string key="NSFrame">{{20, 20}, {208, 170}}</string>
 						<reference key="NSSuperview" ref="1005"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="946373859"/>
 						<int key="NSsFlags">562</int>
 						<reference key="NSVScroller" ref="136505201"/>
@@ -240,6 +249,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{230, 162}, {96, 32}}</string>
 						<reference key="NSSuperview" ref="1005"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="216794170"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="372759957">
@@ -259,6 +269,7 @@
 				</array>
 				<string key="NSFrameSize">{340, 210}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="705555031"/>
 				<string key="NSClassName">NSView</string>
 			</object>
@@ -349,6 +360,14 @@
 						<reference key="destination" ref="82149863"/>
 					</object>
 					<int key="connectionID">40</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">restore:</string>
+						<reference key="source" ref="978704689"/>
+						<reference key="destination" ref="216794170"/>
+					</object>
+					<int key="connectionID">41</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -503,9 +522,48 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">40</int>
+			<int key="maxID">41</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">ODURestoreController</string>
+					<string key="superclassName">NSViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="rescan:">id</string>
+						<string key="restore:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="rescan:">
+							<string key="name">rescan:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="restore:">
+							<string key="name">restore:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="rescan">NSButton</string>
+						<string key="restore">NSButton</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="rescan">
+							<string key="name">rescan</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="restore">
+							<string key="name">restore</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/ODURestoreController.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
