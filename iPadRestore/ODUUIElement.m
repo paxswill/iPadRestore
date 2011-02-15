@@ -9,6 +9,10 @@
 #import "ODUUIElement.h"
 
 
+@interface ODUUIElement()
++(NSError *)errorForAXError:(AXError)error;
+@end
+
 @implementation ODUUIElement
 
 @synthesize element;
