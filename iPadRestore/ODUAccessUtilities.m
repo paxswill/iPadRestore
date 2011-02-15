@@ -32,6 +32,7 @@
 		//Authorize, add permissions, restart
 		//SFAuthorization *auth = [[SFAuthorization alloc] initWithFlags:kAuthorizationFlagDefaults rights:NULL environment:kAuthorizationEmptyEnvironment];
 		//TODO: Check authorization
+		return NO;
 	}else{
 		return YES;
 	}
