@@ -21,6 +21,8 @@
 @synthesize children;
 @synthesize toManyAttributes;
 
+static ODUUIElement *systemElement = nil;
+
 static NSString *axErrorDomain = @"AXError";
 
 - (id)init {
@@ -138,10 +140,12 @@ static NSString *axErrorDomain = @"AXError";
 }
 
 +(ODUUIElement *)systemElement{
-	AXUIElementRef uiElement = AXUIElementCreateSystemWide();
-	ODUUIElement *element = [[ODUUIElement alloc] initWithUIElement:uiElement];
-	CFRelease(uiElement);
-	return [element autorelease];
+	if(systemElement == nil){
+		AXUIElementRef uiElement = AXUIElementCreateSystemWide();
+		systemElement = [[ODUUIElement alloc] initWithUIElement:uiElement];
+		CFRelease(uiElement);
+	}
+	return systemElement;
 }
 
 +(NSError *)errorForAXError:(AXError)error{
