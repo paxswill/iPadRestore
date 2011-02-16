@@ -12,16 +12,8 @@
 @interface ODUUIElement : NSObject {
 @private
     AXUIElementRef element;
-	NSDictionary *attributes;
-	NSDictionary *actions;
-	NSArray *children;
-	NSMutableSet *toManyAttributes;
 }
 @property (nonatomic, readwrite, retain) __attribute__((NSObject)) AXUIElementRef element;
-@property (nonatomic, readwrite, retain) NSDictionary *attributes;
-@property (nonatomic, readwrite, retain) NSDictionary *actions;
-@property (nonatomic, readonly) NSArray *children;
-@property (nonatomic, readwrite, retain) NSMutableSet *toManyAttributes;
 
 -(id)initWithUIElement:(AXUIElementRef)uiElement;
 +(ODUUIElement *)elementForApplicationBundle:(NSString *)bundleIdentifier;
@@ -30,5 +22,7 @@
 
 -(ODUUIElement *)getChildAtIndex:(NSUInteger)childIndex;
 -(ODUUIElement *)getElementForAttribute:(NSString *)attribute;
+
++(NSError *)errorForAXError:(AXError)error;
 
 @end

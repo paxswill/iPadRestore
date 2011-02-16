@@ -7,19 +7,11 @@
 //
 
 #import "ODUUIElement.h"
-
-
-@interface ODUUIElement()
-+(NSError *)errorForAXError:(AXError)error;
-@end
+#import <objc/runtime.h>
 
 @implementation ODUUIElement
 
 @synthesize element;
-@synthesize attributes;
-@synthesize actions;
-@synthesize children;
-@synthesize toManyAttributes;
 
 static ODUUIElement *systemElement = nil;
 
@@ -36,72 +28,7 @@ static NSString *axErrorDomain = @"AXError";
 -(id)initWithUIElement:(AXUIElementRef)uiElement{
 	if((self = [super init])){
 		self.element = uiElement;
-		self.toManyAttributes = [NSMutableSet set];
-		//Fill the attributes and actions
-		CFMutableArrayRef attributeNames;
-		NSMutableArray *attributeValues = [[NSMutableArray alloc] init];
-		CFArrayRef actionNames;
-		NSMutableArray *actionDescriptions = [[NSMutableArray alloc] init];
-		AXError error;
-		error = AXUIElementCopyActionNames(self.element, &actionNames);
-		if(error != kAXErrorSuccess){
-			NSLog(@"Error Copying action names in init:\n%@", [ODUUIElement errorForAXError:error]);
-		}
-		error = AXUIElementCopyAttributeNames(self.element, (CFArrayRef *)&attributeNames);
-		if(error != kAXErrorSuccess){
-			NSLog(@"Error Copying attribute names in init:\n%@", [ODUUIElement errorForAXError:error]);
-		}
-		for(int i = 0; i < [(NSArray *)attributeNames count]; ++i){
-			//Get the attribute name
-			CFStringRef attribute = CFArrayGetValueAtIndex(attributeNames, i);			
-			//How many values does the attribute have?
-			CFIndex attributeCount;
-			error = AXUIElementGetAttributeValueCount(self.element, attribute, &attributeCount);
-			//Check to see if this attribute is valid for this element
-			if(error == kAXErrorAttributeUnsupported){
-				error = kAXErrorSuccess;
-				CFArrayRemoveValueAtIndex(attributeNames, i);
-				--i;
-				continue;
-			}else if(error != kAXErrorSuccess){
-				NSLog(@"Error retireving attribute count in init:\n%@", [ODUUIElement errorForAXError:error]);
-			}
-			//depending on how many values there are, put them in the value array
-			if(attributeCount == 1){
-				//Only one value, easy to manage
-				CFTypeRef obj;
-				error = AXUIElementCopyAttributeValue(self.element, attribute, &obj);
-				[attributeValues addObject:(id)obj];
-				CFRelease(obj);
-			}else if(attributeCount > 1){
-				//Many values, no so easy.
-				CFArrayRef values;
-				error = AXUIElementCopyAttributeValues(self.element, attribute, 0, attributeCount + 1, &values);
-				[attributeValues addObject:(id)values];
-				CFRelease(values);
-				//Mark the attribute as a 'to-many' attribute
-				[self.toManyAttributes addObject:(NSString *)attribute];
-			}else{
-				NSLog(@"Attribute %@ has no value", attribute);
-				CFArrayRemoveValueAtIndex(attributeNames, i);
-				--i;
-			}
-		}
-		for(int i = 0; i < [(NSArray *)actionNames count]; ++i){
-			CFStringRef actionDescription;
-			error = AXUIElementCopyActionDescription(self.element, (CFStringRef)[(NSArray *)actionNames objectAtIndex:i], &actionDescription);
-			[actionDescriptions addObject:(NSString *)actionDescription];
-		}
-		//Make the dictionaries		
-		self.attributes = [NSDictionary dictionaryWithObjects:(NSArray *)attributeValues forKeys:(NSArray *)attributeNames];
-		self.actions = [NSDictionary dictionaryWithObjects:(NSArray *)actionDescriptions forKeys:(NSArray *)actionNames];
-		//Clean up
-		//CFRelease(attributeNames);
-		[attributeValues release];
-		CFRelease(actionNames);
-		[actionDescriptions release];
-		//Setup the children
-		children = nil;
+		
 	}
 	return self;
 }
@@ -215,8 +142,6 @@ static NSString *axErrorDomain = @"AXError";
 - (void)dealloc {
     // Clean-up code here.
     self.element = NULL;
-	self.attributes = nil;
-	self.actions = nil;
     [super dealloc];
 }
 
@@ -224,41 +149,24 @@ static NSString *axErrorDomain = @"AXError";
 	return [NSString stringWithFormat:@"Actions:\n%@\n\nAttributes:\n%@", self.actions, self.attributes];
 }
 
--(NSArray *)children{
-	NSUInteger childCount = [[self.attributes valueForKey:(NSString *)kAXChildrenAttribute] count];
-	NSMutableArray *tempChildren = [[NSMutableArray alloc] initWithCapacity:childCount];
-	for(int i = 0; i < childCount; ++i){
-		[tempChildren addObject:[[[ODUUIElement alloc] initWithUIElement:(AXUIElementRef)[[self.attributes valueForKey:(NSString *)kAXChildrenAttribute] objectAtIndex:i]] autorelease]];
-	}
-	children = tempChildren;
-	return children;
-}
-
--(ODUUIElement *)getChildAtIndex:(NSUInteger)childIndex{
-	return [self.children objectAtIndex:childIndex];
-}
-
--(ODUUIElement *)getElementForAttribute:(NSString *)attributeName{
-	if([[self.attributes allKeys] containsObject:attributeName]){
-		return [[[ODUUIElement alloc] initWithUIElement:(AXUIElementRef)[self.attributes valueForKey:attributeName]] autorelease];
-	}else{
-		return nil;
-	}
-	
-}
 
 //These methods provide dynamic (runtime) method resolution for the AXActions. It is heavy, but it works.
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector{
 	//First check to see if it's a to-many attribute
-	BOOL foundAttribute = [self.toManyAttributes containsObject:NSStringFromSelector(aSelector)];
+	//BOOL foundAttribute = [self.toManyAttributes containsObject:NSStringFromSelector(aSelector)];
+	NSClassDescription *classDesc = [NSClassDescription classDescriptionForClass:[self class]];
+	BOOL foundAttribute = NO;
 	//Here we check to see if the selector has an associtaed action for this element
 	BOOL foundAction = NO;
-	for(int i = 0; i < [[self.actions allKeys] count]; ++i){
-		if(aSelector == NSSelectorFromString([[self.actions allKeys] objectAtIndex:i])){
+	CFArrayRef actions;
+	AXError error = AXUIElementCopyActionNames(self.element, &actions);
+	for(int i = 0; i < CFArrayGetCount(actions); ++i){
+		if(aSelector == NSSelectorFromString(CFArrayGetValueAtIndex(actions, i))){
 			foundAction = YES;
 			break;
 		}
 	}
+	CFRelease(actions);
 	if(foundAction){
 		//Just the two hidden variables, no arguments, void return type
 		char *types = malloc(sizeof(char) * 3);

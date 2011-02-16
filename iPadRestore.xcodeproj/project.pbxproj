@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B1079E85130C825100D11468 /* ODUUIElementClassDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = B1079E84130C825100D11468 /* ODUUIElementClassDescription.m */; };
 		B1B92B3A12F70F2400256851 /* ODUiPad.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B92B3912F70F2400256851 /* ODUiPad.m */; };
 		B1BAE6FF12F7154600F832D0 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1BAE6FE12F7154600F832D0 /* ScriptingBridge.framework */; };
 		B1F40D4012F7069E00F60D70 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1F40D3F12F7069E00F60D70 /* Cocoa.framework */; };
@@ -22,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B1079E83130C825100D11468 /* ODUUIElementClassDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODUUIElementClassDescription.h; sourceTree = "<group>"; };
+		B1079E84130C825100D11468 /* ODUUIElementClassDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODUUIElementClassDescription.m; sourceTree = "<group>"; };
 		B1B92B3812F70F2400256851 /* ODUiPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODUiPad.h; sourceTree = "<group>"; };
 		B1B92B3912F70F2400256851 /* ODUiPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODUiPad.m; sourceTree = "<group>"; };
 		B1BAE6FC12F7130000F832D0 /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
@@ -117,6 +120,8 @@
 				B1FAE5F112F8B1580055673B /* ODUAccessUtilities.m */,
 				B1FAE5F312FA0BA70055673B /* ODUUIElement.h */,
 				B1FAE5F412FA0BA70055673B /* ODUUIElement.m */,
+				B1079E83130C825100D11468 /* ODUUIElementClassDescription.h */,
+				B1079E84130C825100D11468 /* ODUUIElementClassDescription.m */,
 			);
 			path = iPadRestore;
 			sourceTree = "<group>";
@@ -203,6 +208,7 @@
 				B1B92B3A12F70F2400256851 /* ODUiPad.m in Sources */,
 				B1FAE5F212F8B1580055673B /* ODUAccessUtilities.m in Sources */,
 				B1FAE5F512FA0BA70055673B /* ODUUIElement.m in Sources */,
+				B1079E85130C825100D11468 /* ODUUIElementClassDescription.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
