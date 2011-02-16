@@ -44,7 +44,13 @@ static NSString *axErrorDomain = @"AXError";
 		NSMutableArray *actionDescriptions = [[NSMutableArray alloc] init];
 		AXError error;
 		error = AXUIElementCopyActionNames(self.element, &actionNames);
-		error = AXUIElementCopyAttributeNames(self.element, &attributeNames);
+		if(error != kAXErrorSuccess){
+			NSLog(@"Error Copying action names in init:\n%@", [ODUUIElement errorForAXError:error]);
+		}
+		error = AXUIElementCopyAttributeNames(self.element, (CFArrayRef *)&attributeNames);
+		if(error != kAXErrorSuccess){
+			NSLog(@"Error Copying attribute names in init:\n%@", [ODUUIElement errorForAXError:error]);
+		}
 		for(int i = 0; i < [(NSArray *)attributeNames count]; ++i){
 			//Get the attribute name
 			CFStringRef attribute = CFArrayGetValueAtIndex(attributeNames, i);			
@@ -57,6 +63,8 @@ static NSString *axErrorDomain = @"AXError";
 				CFArrayRemoveValueAtIndex(attributeNames, i);
 				--i;
 				continue;
+			}else if(error != kAXErrorSuccess){
+				NSLog(@"Error retireving attribute count in init:\n%@", [ODUUIElement errorForAXError:error]);
 			}
 			//depending on how many values there are, put them in the value array
 			if(attributeCount == 1){
@@ -88,7 +96,7 @@ static NSString *axErrorDomain = @"AXError";
 		self.attributes = [NSDictionary dictionaryWithObjects:(NSArray *)attributeValues forKeys:(NSArray *)attributeNames];
 		self.actions = [NSDictionary dictionaryWithObjects:(NSArray *)actionDescriptions forKeys:(NSArray *)actionNames];
 		//Clean up
-		CFRelease(attributeNames);
+		//CFRelease(attributeNames);
 		[attributeValues release];
 		CFRelease(actionNames);
 		[actionDescriptions release];
@@ -217,15 +225,12 @@ static NSString *axErrorDomain = @"AXError";
 }
 
 -(NSArray *)children{
-	//Lazy load the children.
-	if(children == nil){
-		NSUInteger childCount = [[self.attributes valueForKey:(NSString *)kAXChildrenAttribute] count];
-		NSMutableArray *tempChildren = [[NSMutableArray alloc] initWithCapacity:childCount];
-		for(int i = 0; i < childCount; ++i){
-			[tempChildren addObject:[[[ODUUIElement alloc] initWithUIElement:(AXUIElementRef)[[self.attributes valueForKey:(NSString *)kAXChildrenAttribute] objectAtIndex:i]] autorelease]];
-		}
-		children = tempChildren;
+	NSUInteger childCount = [[self.attributes valueForKey:(NSString *)kAXChildrenAttribute] count];
+	NSMutableArray *tempChildren = [[NSMutableArray alloc] initWithCapacity:childCount];
+	for(int i = 0; i < childCount; ++i){
+		[tempChildren addObject:[[[ODUUIElement alloc] initWithUIElement:(AXUIElementRef)[[self.attributes valueForKey:(NSString *)kAXChildrenAttribute] objectAtIndex:i]] autorelease]];
 	}
+	children = tempChildren;
 	return children;
 }
 
@@ -291,7 +296,9 @@ static NSString *axErrorDomain = @"AXError";
 		// An action
 		NSString *action = NSStringFromSelector(selector);
 		AXError error = AXUIElementPerformAction(self.element, (CFStringRef)action);
-		NSAssert(error == kAXErrorSuccess, @"Action failed!");
+		if(error != kAXErrorCannotComplete){
+			NSAssert(error == kAXErrorSuccess, @"Action failed!");
+		}
 	}
 }
 
