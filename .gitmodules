@@ -1,12 +1,3 @@
-[submodule "src/libimobiledevice"]
-	path = src/libimobiledevice
-	url = http://git.sukimashita.com/libimobiledevice.git
-[submodule "src/usbmuxd"]
-	path = src/usbmuxd
-	url = it://git.marcansoft.com/usbmuxd.git
 [submodule "src/libirecovery"]
 	path = src/libirecovery
 	url = git://github.com/Chronic-Dev/libirecovery.git
-[submodule "src/libplist"]
-	path = src/libplist
-	url = git://github.com/JonathanBeck/libplist.git
