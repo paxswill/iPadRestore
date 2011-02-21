@@ -98,7 +98,7 @@ static NSString *axErrorDomain = @"AXError";
 		//Clean up
 		//CFRelease(attributeNames);
 		[attributeValues release];
-		CFRelease(actionNames);
+		//CFRelease(actionNames);
 		[actionDescriptions release];
 		//Setup the children
 		children = nil;

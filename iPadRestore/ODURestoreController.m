@@ -134,7 +134,7 @@
 	NSUInteger restoreButtonIndex = [scrollArea.children indexOfObjectPassingTest:restoreButtonTest];
 	ODUUIElement *restoreButton = [scrollArea getChildAtIndex:restoreButtonIndex];
 	[restoreButton performSelector:@selector(AXPress)];
-	
+	/*
 	//Get the alert window.
 	//We need to reload the iTunes application element
 	BOOL (^restoreDialogTest)(AXUIElementRef element) = ^BOOL(AXUIElementRef element){
@@ -168,6 +168,7 @@
 	//ODUUIElement *restoreDialogButton = [iTunesElement getElementForAttribute:(NSString *)kAXFocusedUIElementAttribute];
 	NSLog(@"Restore Dialog Button: %@", restoreDialog);
 	//[restoreDialogButton performSelector:@selector(AXPress)];
+	 */
 }
 
 -(IBAction)restore:(id)sender{
