@@ -159,7 +159,7 @@
 		B1F40D3212F7069E00F60D70 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				ORGANIZATIONNAME = "Naval Research Lab";
+				ORGANIZATIONNAME = "Old Dominion University";
 			};
 			buildConfigurationList = B1F40D3512F7069E00F60D70 /* Build configuration list for PBXProject "iPadRestore" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -310,7 +310,7 @@
 				B1F40D5812F7069F00F60D70 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		B1F40D5912F7069F00F60D70 /* Build configuration list for PBXNativeTarget "iPadRestore" */ = {
 			isa = XCConfigurationList;
@@ -319,7 +319,7 @@
 				B1F40D5B12F7069F00F60D70 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
