@@ -36,72 +36,7 @@ static NSString *axErrorDomain = @"AXError";
 -(id)initWithUIElement:(AXUIElementRef)uiElement{
 	if((self = [super init])){
 		self.element = uiElement;
-		self.toManyAttributes = [NSMutableSet set];
-		//Fill the attributes and actions
-		CFMutableArrayRef attributeNames;
-		NSMutableArray *attributeValues = [[NSMutableArray alloc] init];
-		CFArrayRef actionNames;
-		NSMutableArray *actionDescriptions = [[NSMutableArray alloc] init];
-		AXError error;
-		error = AXUIElementCopyActionNames(self.element, &actionNames);
-		if(error != kAXErrorSuccess){
-			NSLog(@"Error Copying action names in init:\n%@", [ODUUIElement errorForAXError:error]);
-		}
-		error = AXUIElementCopyAttributeNames(self.element, (CFArrayRef *)&attributeNames);
-		if(error != kAXErrorSuccess){
-			NSLog(@"Error Copying attribute names in init:\n%@", [ODUUIElement errorForAXError:error]);
-		}
-		for(int i = 0; i < [(NSArray *)attributeNames count]; ++i){
-			//Get the attribute name
-			CFStringRef attribute = CFArrayGetValueAtIndex(attributeNames, i);			
-			//How many values does the attribute have?
-			CFIndex attributeCount;
-			error = AXUIElementGetAttributeValueCount(self.element, attribute, &attributeCount);
-			//Check to see if this attribute is valid for this element
-			if(error == kAXErrorAttributeUnsupported){
-				error = kAXErrorSuccess;
-				CFArrayRemoveValueAtIndex(attributeNames, i);
-				--i;
-				continue;
-			}else if(error != kAXErrorSuccess){
-				NSLog(@"Error retireving attribute count in init:\n%@", [ODUUIElement errorForAXError:error]);
-			}
-			//depending on how many values there are, put them in the value array
-			if(attributeCount == 1){
-				//Only one value, easy to manage
-				CFTypeRef obj;
-				error = AXUIElementCopyAttributeValue(self.element, attribute, &obj);
-				[attributeValues addObject:(id)obj];
-				CFRelease(obj);
-			}else if(attributeCount > 1){
-				//Many values, no so easy.
-				CFArrayRef values;
-				error = AXUIElementCopyAttributeValues(self.element, attribute, 0, attributeCount + 1, &values);
-				[attributeValues addObject:(id)values];
-				CFRelease(values);
-				//Mark the attribute as a 'to-many' attribute
-				[self.toManyAttributes addObject:(NSString *)attribute];
-			}else{
-				NSLog(@"Attribute %@ has no value", attribute);
-				CFArrayRemoveValueAtIndex(attributeNames, i);
-				--i;
-			}
-		}
-		for(int i = 0; i < [(NSArray *)actionNames count]; ++i){
-			CFStringRef actionDescription;
-			error = AXUIElementCopyActionDescription(self.element, (CFStringRef)[(NSArray *)actionNames objectAtIndex:i], &actionDescription);
-			[actionDescriptions addObject:(NSString *)actionDescription];
-		}
-		//Make the dictionaries		
-		self.attributes = [NSDictionary dictionaryWithObjects:(NSArray *)attributeValues forKeys:(NSArray *)attributeNames];
-		self.actions = [NSDictionary dictionaryWithObjects:(NSArray *)actionDescriptions forKeys:(NSArray *)actionNames];
-		//Clean up
-		//CFRelease(attributeNames);
-		[attributeValues release];
-		//CFRelease(actionNames);
-		[actionDescriptions release];
-		//Setup the children
-		children = nil;
+		[self refresh];
 	}
 	return self;
 }
@@ -155,6 +90,80 @@ static NSString *axErrorDomain = @"AXError";
 	}
 	return systemElement;
 }
+
+-(void)refresh{
+	self.toManyAttributes = [NSMutableSet set];
+	//Fill the attributes and actions
+	CFMutableArrayRef attributeNames;
+	NSMutableArray *attributeValues = [[NSMutableArray alloc] init];
+	CFArrayRef actionNames;
+	NSMutableArray *actionDescriptions = [[NSMutableArray alloc] init];
+	AXError error;
+	error = AXUIElementCopyActionNames(self.element, &actionNames);
+	if(error != kAXErrorSuccess){
+		NSLog(@"Error Copying action names in init:\n%@", [ODUUIElement errorForAXError:error]);
+	}
+	error = AXUIElementCopyAttributeNames(self.element, (CFArrayRef *)&attributeNames);
+	if(error != kAXErrorSuccess){
+		NSLog(@"Error Copying attribute names in init:\n%@", [ODUUIElement errorForAXError:error]);
+	}
+	for(int i = 0; i < [(NSArray *)attributeNames count]; ++i){
+		//Get the attribute name
+		CFStringRef attribute = CFArrayGetValueAtIndex(attributeNames, i);
+		// Get the attribute
+		CFTypeRef attr;
+		error = AXUIElementCopyAttributeValue(self.element, attribute, &attr);
+		//Check to see if this attribute is valid for this element
+		if(error == kAXErrorAttributeUnsupported){
+			error = kAXErrorSuccess;
+			CFArrayRemoveValueAtIndex(attributeNames, i);
+			--i;
+			continue;
+		}else if(error == kAXErrorNoValue){
+			NSLog(@"Attribute %@ has no value", attribute);
+			CFArrayRemoveValueAtIndex(attributeNames, i);
+			--i;
+			continue;
+		}else if(error != kAXErrorSuccess){
+			NSLog(@"Error retrieving attribute count in init:\n%@", [ODUUIElement errorForAXError:error]);
+		}
+		// What kind of attribute is it?
+		if(CFGetTypeID(attr) == CFArrayGetTypeID()){
+			// Array
+			//How many values does the attribute have?
+			CFIndex attributeCount;
+			error = AXUIElementGetAttributeValueCount(self.element, attribute, &attributeCount);
+			//depending on how many values there are, put them in the value array
+			if(attributeCount >= 1){
+				[attributeValues addObject:(id)attr];
+				//Mark the attribute as a 'to-many' attribute
+				[self.toManyAttributes addObject:(NSString *)attribute];
+			}else{
+				NSLog(@"Attribute %@ has no value", attribute);
+				CFArrayRemoveValueAtIndex(attributeNames, i);
+				--i;
+			}
+		}else{
+			[attributeValues addObject:(id)attr];
+		}
+	}
+	for(int i = 0; i < [(NSArray *)actionNames count]; ++i){
+		CFStringRef actionDescription;
+		error = AXUIElementCopyActionDescription(self.element, (CFStringRef)[(NSArray *)actionNames objectAtIndex:i], &actionDescription);
+		[actionDescriptions addObject:(NSString *)actionDescription];
+	}
+	//Make the dictionaries		
+	self.attributes = [NSDictionary dictionaryWithObjects:(NSArray *)attributeValues forKeys:(NSArray *)attributeNames];
+	self.actions = [NSDictionary dictionaryWithObjects:(NSArray *)actionDescriptions forKeys:(NSArray *)actionNames];
+	//Clean up
+	//CFRelease(attributeNames);
+	[attributeValues release];
+	//CFRelease(actionNames);
+	[actionDescriptions release];
+	//Setup the children
+	children = nil;
+}
+
 
 +(NSError *)errorForAXError:(AXError)error{
 	NSString *errorDescription = nil;

@@ -30,5 +30,6 @@
 
 -(ODUUIElement *)getChildAtIndex:(NSUInteger)childIndex;
 -(ODUUIElement *)getElementForAttribute:(NSString *)attribute;
+-(void)refresh;
 
 @end
