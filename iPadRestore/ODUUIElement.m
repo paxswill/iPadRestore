@@ -36,6 +36,7 @@ static NSString *axErrorDomain = @"AXError";
 -(id)initWithUIElement:(AXUIElementRef)uiElement{
 	if((self = [super init])){
 		self.element = uiElement;
+		CFRetain(self.element);
 		[self refresh];
 	}
 	return self;
@@ -223,7 +224,8 @@ static NSString *axErrorDomain = @"AXError";
 
 - (void)dealloc {
     // Clean-up code here.
-    self.element = NULL;
+    CFRelease(self.element);
+	self.element = NULL;
 	self.attributes = nil;
 	self.actions = nil;
     [super dealloc];
