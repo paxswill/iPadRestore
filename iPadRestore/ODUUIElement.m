@@ -92,6 +92,16 @@ static NSString *axErrorDomain = @"AXError";
 	return systemElement;
 }
 
+-(void)performAction:(NSString *)action{
+	if(![[self.actions allKeys] containsObject:action]){
+		NSLog(@"Invalid action %@", action);
+	}
+	AXError error = AXUIElementPerformAction(self.element, (CFStringRef)action);
+	if(error != kAXErrorSuccess){
+		NSLog(@"Error performing action: %@", [ODUUIElement errorForAXError:error]);
+	}
+}
+
 -(void)refresh{
 	self.toManyAttributes = [NSMutableSet set];
 	//Fill the attributes and actions
