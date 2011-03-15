@@ -112,7 +112,7 @@
 	NSUInteger summaryIndex = [tabGroup.children indexOfObjectPassingTest:summaryTest];
 	ODUUIElement *summaryButton = [tabGroup getChildAtIndex:summaryIndex];
 	NSLog(@"summaryButton: %@", summaryButton);
-	[summaryButton performSelector:@selector(AXPress)];
+	[summaryButton performAction:(NSString *)kAXPressAction];
 	
 	//Get the scroll area
 	BOOL (^scrollAreaTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
@@ -133,7 +133,7 @@
 	};
 	NSUInteger restoreButtonIndex = [scrollArea.children indexOfObjectPassingTest:restoreButtonTest];
 	ODUUIElement *restoreButton = [scrollArea getChildAtIndex:restoreButtonIndex];
-	[restoreButton performSelector:@selector(AXPress)];
+	[restoreButton performAction:(NSString *)kAXPressAction];
 	
 	// Get the restore alert dialog
 	[iTunesElement refresh];
@@ -149,6 +149,8 @@
 	};
 	NSUInteger noBackupButtonIndex = [backupAlertWindow.children indexOfObjectPassingTest:noBackupButtonTest];
 	ODUUIElement *noBackupButton = [scrollArea getChildAtIndex:noBackupButtonIndex];
+	[noBackupButton performAction:(NSString *)kAXPressAction];
+	
 }
 
 -(IBAction)restore:(id)sender{
