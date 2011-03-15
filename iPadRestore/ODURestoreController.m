@@ -134,41 +134,21 @@
 	NSUInteger restoreButtonIndex = [scrollArea.children indexOfObjectPassingTest:restoreButtonTest];
 	ODUUIElement *restoreButton = [scrollArea getChildAtIndex:restoreButtonIndex];
 	[restoreButton performSelector:@selector(AXPress)];
-	/*
-	//Get the alert window.
-	//We need to reload the iTunes application element
-	BOOL (^restoreDialogTest)(AXUIElementRef element) = ^BOOL(AXUIElementRef element){
-		//Is it a window?
-		CFStringRef roleType;
-		CFTypeRef roleRef;
-		AXError error = AXUIElementCopyAttributeValue(element, kAXRoleAttribute, &roleRef);
-		roleType = (CFStringRef)roleRef;
-		if(CFStringCompare(roleType, kAXWindowRole, 0)){
-			//Move down the tree to see if it has the proper attributes
-			CFIndex attributeCount;
-			error = AXUIElementGetAttributeValueCount(element, kAXChildrenAttribute, &attributeCount);
-			for(int i = 0; i < attributeCount; ++i){
-				AXUIElementRef textElement;
-				CFArrayRef values;
-				error = AXUIElementCopyAttributeValues(element, kAXChildrenAttribute, i, 1, &values);
-				textElement = CFArrayGetValueAtIndex(values, 0);
-				//Is this the right text?
-				CFTypeRef textValue;
-				error = AXUIElementCopyAttributeValue(textElement, kAXValueAttribute, &textValue);
-				CFStringRef text = (CFStringRef)textValue;
-				NSString *refText = @"iTunes will verify the restore with Apple. After this process is complete, you will have the option to restore your contacts, calendars, text messages and other settings.";
-				if(CFStringCompare(text, (CFStringRef)refText, 0)){
-					return YES;
-				}
-			}
-		}
-		return NO;
+	
+	// Get the restore alert dialog
+	[iTunesElement refresh];
+	ODUUIElement *backupAlertWindow = [[iTunesElement getElementForAttribute:(NSString *)kAXFocusedWindowAttribute] retain];
+	
+	// Get the "Don't back up" button
+	BOOL (^noBackupButtonTest)(id obj, NSUInteger idx, BOOL *stop) = ^BOOL(id obj, NSUInteger idx, BOOL *stop){
+		ODUUIElement *child = (ODUUIElement *)obj;
+		BOOL isButton = [(NSString *)[child.attributes valueForKey:(NSString *)kAXRoleAttribute] isEqualToString:(NSString *)kAXButtonRole];
+		NSString *title = (NSString *)[child.attributes valueForKey:(NSString *)kAXTitleAttribute];
+		BOOL isNotBackup = [title isEqualToString:@"Don’t Back Up"];
+		return isButton && isNotBackup;
 	};
-	ODUUIElement *restoreDialog = [self findElementMatchingTest:restoreDialogTest];
-	//ODUUIElement *restoreDialogButton = [iTunesElement getElementForAttribute:(NSString *)kAXFocusedUIElementAttribute];
-	NSLog(@"Restore Dialog Button: %@", restoreDialog);
-	//[restoreDialogButton performSelector:@selector(AXPress)];
-	 */
+	NSUInteger noBackupButtonIndex = [backupAlertWindow.children indexOfObjectPassingTest:noBackupButtonTest];
+	ODUUIElement *noBackupButton = [scrollArea getChildAtIndex:noBackupButtonIndex];
 }
 
 -(IBAction)restore:(id)sender{
