@@ -3,7 +3,7 @@
 //  iPadRestore
 //
 //  Created by Will Ross on 1/31/11.
-//  Copyright 2011 Naval Research Lab. All rights reserved.
+//  Copyright 2011 Old Dominion University. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
